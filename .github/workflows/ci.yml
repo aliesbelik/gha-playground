@@ -12,7 +12,7 @@ on:
   workflow_dispatch: # on-demand/manual triggering
 
 jobs:
-  compile:
+  test:
     strategy:
       fail-fast: false
       matrix:
@@ -20,7 +20,7 @@ jobs:
         java: [ 8, 11, 17 ]
         distro: [ 'zulu' ]
     runs-on: ${{ matrix.os }}
-    name: Java ${{ matrix.java }} (${{ matrix.distro }} @ ${{ matrix.os }}) compile
+    name: Test against Java ${{ matrix.java }} (${{ matrix.distro }} @ ${{ matrix.os }})
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -30,13 +30,13 @@ jobs:
         distribution: ${{ matrix.distro }}
         java-version: ${{ matrix.java }}
     - name: JDK version
-      run: java --version
-    - name: Compile
-      run: mvn -B compile
+      run: java -version
+    - name: Test
+      run: mvn -B test
 
   build:
     runs-on: ubuntu-latest
-    needs: compile
+    needs: test
     name: Build project
     steps:
     - name: Checkout
