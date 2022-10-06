@@ -9,11 +9,20 @@
 
   <name>${project.artifactId}</name>
   <url>https://github.com/aliesbelik/gha-playground</url>
+  <description>Demo project for GitHub Actions</description>
 
   <organization>
     <name>Aliaksandr Belik</name>
     <url>https://github.com/aliesbelik</url>
   </organization>
+
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/aliesbelik/gha-playground</url>
+    </repository>
+  </distributionManagement>
 
   <properties>
     <revision>0.2.0-SNAPSHOT</revision>

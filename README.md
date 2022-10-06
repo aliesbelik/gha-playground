@@ -1,3 +1,3 @@
 # GH Actions Playground
 
-Sample workflows using GitHub Actions to build, test and release a Java project.
+Playground for workflows using GitHub Actions to build, test, release and publish a sample Java project.
