@@ -1,4 +1,4 @@
-name: Publish package
+name: Publish
 
 on:
   release:
@@ -10,6 +10,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+    name: Publish package
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -19,7 +20,13 @@ jobs:
           distribution: zulu
           java-package: jdk
           java-version: 8
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
       - name: Publish package to GitHub Packages
         run: mvn -B clean deploy -DskipTests
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -33,6 +33,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          draft: true
           generate_release_notes: true
           files: |
             target/gha-sample-app-*.jar
