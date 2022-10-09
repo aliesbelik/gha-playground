@@ -26,7 +26,11 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+      - name: Create Maven settings.xml
+        uses: s4u/maven-settings-action@v2.6.0
+        with:
+          servers: '[{"id": "github", "configuration": {"httpHeaders": {"property": {"name": "Authorization", "value": "Bearer ${{ secrets.GHP_TOKEN }}"}}}}]'
       - name: Publish package to GitHub Packages
         run: mvn -B clean deploy -DskipTests
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GHP_TOKEN }}
