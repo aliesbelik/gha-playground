@@ -29,7 +29,22 @@ jobs:
       - name: Create Maven settings.xml
         uses: s4u/maven-settings-action@v2.6.0
         with:
-          servers: '[{"id": "github", "configuration": {"httpHeaders": {"property": {"name": "Authorization", "value": "Bearer ${{ secrets.GHP_TOKEN }}"}}}}]'
+          githubServer: false
+          servers: |
+            [{
+              "id": "github",
+              "configuration": {
+                "httpHeaders": {
+                  "property": {
+                    "name": "Authorization",
+                    "value": "Bearer ${{ secrets.GHP_TOKEN }}"
+                  }
+                }
+              }
+            }]
+      - name: Display Maven settings.xml
+        run: |
+          cat /home/runner/.m2/settings.xml
       - name: Publish package to GitHub Packages
         run: mvn -B clean deploy -DskipTests
         env:
