@@ -2,14 +2,14 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.aliesbelik.sample</groupId>
+  <groupId>io.github.aliesbelik</groupId>
   <artifactId>gha-sample-app</artifactId>
   <packaging>jar</packaging>
   <version>${revision}</version>
 
-  <name>${project.artifactId}</name>
-  <url>https://github.com/aliesbelik/gha-playground</url>
+  <name>GitHub Actions demo</name>
   <description>Demo project for GitHub Actions</description>
+  <url>https://github.com/aliesbelik/gha-playground</url>
 
   <organization>
     <name>Aliaksandr Belik</name>
@@ -24,6 +24,13 @@
     </repository>
   </distributionManagement>
 
+  <scm>
+    <url>https://github.com/aliesbelik/gha-playground</url>
+    <connection>scm:git:https://github.com/aliesbelik/gha-playground.git</connection>
+    <developerConnection>scm:git:https://github.com/aliesbelik/gha-playground.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
   <properties>
     <revision>0.1.4</revision>
     <java.version>1.8</java.version>
@@ -31,7 +38,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <main.class>com.aliesbelik.sample.App</main.class>
+    <main.class>io.github.aliesbelik.App</main.class>
 
     <!-- dependency versions -->
     <junit.version>4.13.2</junit.version>
@@ -77,7 +84,6 @@
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
-          <optimize>true</optimize>
           <showDeprecation>false</showDeprecation>
           <showWarnings>true</showWarnings>
         </configuration>
@@ -86,6 +92,13 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>${maven-shade-plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-transform-maven-shade-plugin-extensions</artifactId>
+            <version>0.1.0</version>
+          </dependency>
+        </dependencies>
         <executions>
           <execution>
             <id>create-fat-jar</id>
@@ -94,17 +107,6 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <transformers>
-                <transformer
-                  implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>${main.class}</mainClass>
-                  <manifestEntries>
-                    <Built-By>${project.organization.name}</Built-By>
-                    <Timestamp>${maven.build.timestamp}</Timestamp>
-                  </manifestEntries>
-                </transformer>
-              </transformers>
-              <!-- https://issues.apache.org/jira/browse/MSHADE-366 -->
               <minimizeJar>false</minimizeJar>
               <shadedArtifactAttached>false</shadedArtifactAttached>
               <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -112,18 +114,29 @@
                 <filter>
                   <artifact>*:*</artifact>
                   <excludes>
+                    <exclude>META-INF/*.MF</exclude>
                     <exclude>META-INF/*.SF</exclude>
                     <exclude>META-INF/*.DSA</exclude>
                     <exclude>META-INF/*.RSA</exclude>
                   </excludes>
                 </filter>
-                <filter>
-                  <artifact>org.apache.logging.log4j:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*</exclude>
-                  </excludes>
-                </filter>
               </filters>
+              <transformers>
+                <transformer implementation="org.apache.logging.log4j.maven.plugins.shade.transformer.Log4j2PluginCacheFileTransformer"/>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>${main.class}</mainClass>
+                  <manifestEntries>
+                    <Automatic-Module-Name>${project.artifactId}</Automatic-Module-Name>
+                    <Implementation-Title>${project.name}</Implementation-Title>
+                    <Implementation-Version>${project.version}</Implementation-Version>
+                    <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+                    <Implementation-URL>${project.url}</Implementation-URL>
+                    <Implementation-Build-Date>${maven.build.timestamp}</Implementation-Build-Date>
+                    <Built-By>${project.organization.name}</Built-By>
+                  </manifestEntries>
+                </transformer>
+              </transformers>
             </configuration>
           </execution>
         </executions>

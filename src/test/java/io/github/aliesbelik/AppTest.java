@@ -1,4 +1,4 @@
-package com.aliesbelik.sample;
+package io.github.aliesbelik;
 
 import org.junit.Assert;
 import org.junit.Before;
