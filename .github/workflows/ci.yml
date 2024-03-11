@@ -64,3 +64,17 @@ jobs:
         path: |
           target/*.jar
           !target/original-*.jar
+
+  automerge:
+    if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' }}
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    name: Dependabot Automerge
+    steps:
+      - name: merge-dependabot
+        uses: fastify/github-action-merge-dependabot@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
