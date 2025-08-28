@@ -37,7 +37,7 @@ jobs:
                 "httpHeaders": {
                   "property": {
                     "name": "Authorization",
-                    "value": "Bearer ${{ secrets.GHP_TOKEN }}"
+                    "value": "Bearer ${{ secrets.GITHUB_TOKEN }}"
                   }
                 }
               }
@@ -48,4 +48,4 @@ jobs:
       - name: Publish package to GitHub Packages
         run: mvn -B clean deploy -DskipTests
         env:
-          GITHUB_TOKEN: ${{ secrets.GHP_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
