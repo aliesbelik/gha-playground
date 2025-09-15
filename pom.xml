@@ -51,7 +51,7 @@
 
     <!-- plugin versions -->
     <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
-    <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
+    <maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
   </properties>
 
   <dependencies>
