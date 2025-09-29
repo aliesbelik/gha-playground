@@ -50,7 +50,7 @@
     <log4j.version>2.25.1</log4j.version>
 
     <!-- plugin versions -->
-    <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+    <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
     <maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
   </properties>
 
