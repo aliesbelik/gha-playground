@@ -47,7 +47,7 @@
 
     <!-- dependency versions -->
     <junit.version>4.13.2</junit.version>
-    <log4j.version>2.25.1</log4j.version>
+    <log4j.version>2.25.2</log4j.version>
 
     <!-- plugin versions -->
     <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
